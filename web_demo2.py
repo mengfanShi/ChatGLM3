@@ -1,6 +1,7 @@
 import streamlit as st
 import torch
 from transformers import AutoModel, AutoTokenizer
+import os
 
 # 设置页面标题、图标和布局
 st.set_page_config(
@@ -10,12 +11,13 @@ st.set_page_config(
 )
 
 # 设置为模型ID或本地文件夹路径
-model_path = "THUDM/chatglm3-6b"
+# model_path = "THUDM/chatglm3-6b"
+model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "THUDM\chatglm3-6b")
 
 @st.cache_resource
 def get_model():
     tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-    model = AutoModel.from_pretrained(model_path, trust_remote_code=True).cuda()
+    model = AutoModel.from_pretrained(model_path, trust_remote_code=True).half().cuda()
     # 多显卡支持,使用下面两行代替上面一行,将num_gpus改为你实际的显卡数量
     # from utils import load_model_on_gpus
     # model = load_model_on_gpus("THUDM/chatglm3-6b", num_gpus=2)
