@@ -4,7 +4,7 @@ import mdtex2html
 from utils import load_model_on_gpus
 import os
 
-dirpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "THUDM\chatglm3-6b")
+dirpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "THUDM", "chatglm3-6b")
 tokenizer = AutoTokenizer.from_pretrained(dirpath, trust_remote_code=True)
 # model = AutoModel.from_pretrained("THUDM/chatglm3-6b", trust_remote_code=True).cuda()
 model = AutoModel.from_pretrained(dirpath, trust_remote_code=True).half().cuda()
