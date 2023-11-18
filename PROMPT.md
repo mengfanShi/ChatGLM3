@@ -12,6 +12,7 @@ Hello
 <|assistant|>
 Hello, I'm ChatGLM3. What can I assist you today?
 ```
+**实际中每轮对话内容并不一定以换行符结尾，这里只是为了美观，下同**
 
 #### 对话头
 对话头占完整的一行，格式为
@@ -28,6 +29,9 @@ Hello, I'm ChatGLM3. What can I assist you today?
   - 必须在 `<|assistant|>` 的信息之后
 
 ### 样例场景
+
+为提升可读性，下列样例场景中表示角色的 special token 前均额外添加了一个换行符。实际使用及 tokenizer 实现中均无需额外添加这一换行。
+
 #### 多轮对话
 * 有且仅有 `<|user|>`、`<|assistant|>`、`<|system|>` 三种 role
 ```text
@@ -190,7 +194,7 @@ plt.show()
 ```
 <|observation|>
 ```result
-【image】
+[Image]
 ```
 <|assistant|>
 这是一个爱心形状。我使用了参数方程来描述这个形状，并使用matplotlib进行了绘制。如果您有任何其他需求或问题，请随时告诉我。

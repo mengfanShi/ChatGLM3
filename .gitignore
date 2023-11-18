@@ -1,2 +1,10 @@
-__pycache__/*
+__pycache__
 THUDM/*
+# finetune_demo: generated & downloaded files
+finetune_demo/output
+finetune_demo/data
+finetune_demo/formatted_data
+ToolAlpaca/
+AdvertiseGen/
+*.gz
+*.idea
