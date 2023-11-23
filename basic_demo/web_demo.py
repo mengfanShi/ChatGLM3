@@ -1,21 +1,25 @@
+import os
 from transformers import AutoModel, AutoTokenizer
 import gradio as gr
 import mdtex2html
 from utils import load_model_on_gpus
-import os
+import torch
 
-dirpath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "THUDM", "chatglm3-6b")
-tokenizer = AutoTokenizer.from_pretrained(dirpath, trust_remote_code=True)
-model = AutoModel.from_pretrained(dirpath, trust_remote_code=True).cuda()
-# model = AutoModel.from_pretrained(dirpath, trust_remote_code=True).half().cuda()
+MODEL_PATH = os.environ.get('MODEL_PATH', 'THUDM/chatglm3-6b')
+TOKENIZER_PATH = os.environ.get("TOKENIZER_PATH", MODEL_PATH)
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_PATH, trust_remote_code=True)
+if 'cuda' in DEVICE: # AMD, NVIDIA GPU can use Half Precision
+    model = AutoModel.from_pretrained(MODEL_PATH, trust_remote_code=True).to(DEVICE).eval()
+else: # CPU, Intel GPU and other GPU can use Float16 Precision Only
+    model = AutoModel.from_pretrained(MODEL_PATH, trust_remote_code=True).float().to(DEVICE).eval()
+
 # 多显卡支持，使用下面两行代替上面一行，将num_gpus改为你实际的显卡数量
 # from utils import load_model_on_gpus
 # model = load_model_on_gpus("THUDM/chatglm3-6b", num_gpus=2)
 
-model = model.eval()
-
 """Override Chatbot.postprocess"""
-
 
 def postprocess(self, y):
     if y is None:
